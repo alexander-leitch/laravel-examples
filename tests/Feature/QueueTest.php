@@ -30,7 +30,7 @@ class QueueTest extends TestCase
 
         $response = $this->postJson('/queue-demo/dispatch', [
             'task_name' => 'Test Job',
-            'duration' => 10
+            'duration' => 10,
         ]);
 
         $response->assertStatus(200);
@@ -65,7 +65,7 @@ class QueueTest extends TestCase
         // Dispatch a job
         $this->postJson('/queue-demo/dispatch', [
             'task_name' => 'Test Job',
-            'duration' => 5
+            'duration' => 5,
         ]);
 
         $response = $this->getJson('/queue-demo/jobs');
@@ -73,7 +73,7 @@ class QueueTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'pending_jobs',
-            'jobs'
+            'jobs',
         ]);
     }
 
@@ -83,7 +83,7 @@ class QueueTest extends TestCase
     public function test_job_executes(): void
     {
         $job = new ProcessDemoJob('Test Execution', 0); // 0 duration for speed
-        
+
         // Job should not throw exception
         $this->expectNotToPerformAssertions();
         $job->handle();
@@ -99,7 +99,7 @@ class QueueTest extends TestCase
         $response = $this->postJson('/queue-demo/dispatch', []);
 
         $response->assertStatus(200);
-        
+
         Queue::assertPushed(ProcessDemoJob::class);
     }
 }

@@ -25,10 +25,10 @@ class ProcessDemoJob implements ShouldQueue
     public function handle(): void
     {
         \Log::info("Starting job: {$this->taskName}");
-        
+
         // Simulate a long-running task
         sleep($this->duration);
-        
+
         \Log::info("Completed job: {$this->taskName}");
     }
 }

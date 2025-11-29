@@ -34,12 +34,12 @@ class CacheTest extends TestCase
             'data',
             'execution_time_ms',
             'was_cached',
-            'cache_key'
+            'cache_key',
         ]);
 
         // Verify the cache key is correct
         $response->assertJson([
-            'cache_key' => 'demo_expensive_data'
+            'cache_key' => 'demo_expensive_data',
         ]);
     }
 
@@ -61,7 +61,7 @@ class CacheTest extends TestCase
         // Cached request should be significantly faster
         $this->assertLessThan($time1, $time2);
         $response2->assertJson([
-            'was_cached' => true
+            'was_cached' => true,
         ]);
     }
 
@@ -74,7 +74,7 @@ class CacheTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson([
-            'was_cached' => false
+            'was_cached' => false,
         ]);
 
         // Cache should not be used
@@ -94,7 +94,7 @@ class CacheTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson([
             'success' => true,
-            'message' => 'Cache cleared successfully!'
+            'message' => 'Cache cleared successfully!',
         ]);
 
         // Verify cache was cleared
@@ -114,8 +114,8 @@ class CacheTest extends TestCase
             'data' => [
                 'users',
                 'generated_at',
-                'note'
-            ]
+                'note',
+            ],
         ]);
 
         $data = $response->json('data');

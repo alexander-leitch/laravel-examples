@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Jobs\ProcessDemoJob;
+use Illuminate\Http\Request;
 
 class QueueDemoController extends Controller
 {
@@ -14,7 +14,7 @@ class QueueDemoController extends Controller
 
     public function dispatch(Request $request)
     {
-        $taskName = $request->input('task_name', 'Demo Task ' . now()->format('H:i:s'));
+        $taskName = $request->input('task_name', 'Demo Task '.now()->format('H:i:s'));
         $duration = $request->input('duration', 10);
 
         ProcessDemoJob::dispatch($taskName, $duration);
@@ -22,7 +22,7 @@ class QueueDemoController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Job '{$taskName}' dispatched successfully!",
-            'info' => "The job will take approximately {$duration} seconds to complete."
+            'info' => "The job will take approximately {$duration} seconds to complete.",
         ]);
     }
 
@@ -32,7 +32,7 @@ class QueueDemoController extends Controller
 
         return response()->json([
             'pending_jobs' => $jobs->count(),
-            'jobs' => $jobs
+            'jobs' => $jobs,
         ]);
     }
 }

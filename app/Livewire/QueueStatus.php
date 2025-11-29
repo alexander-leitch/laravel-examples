@@ -2,12 +2,13 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class QueueStatus extends Component
 {
     public $jobs = [];
+
     public $pendingCount = 0;
 
     public function mount()

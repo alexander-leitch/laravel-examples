@@ -36,7 +36,7 @@ class CacheDemoController extends Controller
             'data' => $data,
             'execution_time_ms' => $executionTime,
             'was_cached' => $cached,
-            'cache_key' => $cacheKey
+            'cache_key' => $cacheKey,
         ]);
     }
 
@@ -46,7 +46,7 @@ class CacheDemoController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Cache cleared successfully!'
+            'message' => 'Cache cleared successfully!',
         ]);
     }
 
@@ -62,7 +62,7 @@ class CacheDemoController extends Controller
                 ['id' => 3, 'name' => 'Bob Johnson', 'email' => 'bob@example.com'],
             ],
             'generated_at' => now()->toDateTimeString(),
-            'note' => 'This data took 3 seconds to generate'
+            'note' => 'This data took 3 seconds to generate',
         ];
     }
 }
