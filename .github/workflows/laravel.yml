@@ -76,7 +76,7 @@ jobs:
       run: php artisan migrate --force
 
     - name: Execute PHPUnit Tests
-      run: php artisan test --parallel
+      run: php artisan test
 
     - name: Execute Queue Tests
       run: php artisan test --filter=QueueTest
