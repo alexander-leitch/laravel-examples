@@ -76,12 +76,18 @@ jobs:
       run: php artisan migrate --force
 
     - name: Execute PHPUnit Tests
+      env:
+        APP_ENV: production
       run: php artisan test
 
     - name: Execute Queue Tests
+      env:
+        APP_ENV: production
       run: php artisan test --filter=QueueTest
 
     - name: Execute Cache Tests
+      env:
+        APP_ENV: production
       run: php artisan test --filter=CacheTest
 
   code-quality:
