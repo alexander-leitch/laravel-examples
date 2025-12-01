@@ -18,7 +18,7 @@ class QueueTest extends TestCase
     public function test_queue_demo_page_loads(): void
     {
         // Skip in CI where Vite build manifest may not be available
-        if (!file_exists(public_path('build/manifest.json'))) {
+        if (! file_exists(public_path('build/manifest.json'))) {
             $this->markTestSkipped('View tests skipped when Vite manifest is not available');
         }
 
