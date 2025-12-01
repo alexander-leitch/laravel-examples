@@ -13,8 +13,9 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        if (env('VITE_HOT_FILE') === 'false') {
-            $this->markTestSkipped('View tests skipped in CI environment');
+        // Skip in CI where Vite build manifest may not be available
+        if (!file_exists(public_path('build/manifest.json'))) {
+            $this->markTestSkipped('View tests skipped when Vite manifest is not available');
         }
 
         $response = $this->get('/');
