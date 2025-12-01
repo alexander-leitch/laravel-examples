@@ -19,7 +19,7 @@ class CacheTest extends TestCase
         if (env('VITE_HOT_FILE') === 'false') {
             $this->markTestSkipped('View tests skipped in CI environment');
         }
-        
+
         $response = $this->get('/cache-demo');
         $response->assertStatus(200);
         $response->assertSee('Cache System Demo');

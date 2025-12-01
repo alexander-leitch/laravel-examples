@@ -16,7 +16,7 @@ class ExampleTest extends TestCase
         if (env('VITE_HOT_FILE') === 'false') {
             $this->markTestSkipped('View tests skipped in CI environment');
         }
-        
+
         $response = $this->get('/');
 
         $response->assertStatus(200);

@@ -20,7 +20,7 @@ class QueueTest extends TestCase
         if (env('VITE_HOT_FILE') === 'false') {
             $this->markTestSkipped('View tests skipped in CI environment');
         }
-        
+
         $response = $this->get('/queue-demo');
         $response->assertStatus(200);
         $response->assertSee('Queue System Demo');
