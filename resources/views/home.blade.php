@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 min-h-screen text-gray-100">
+<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 light:from-gray-50 light:via-blue-50 light:to-purple-50 min-h-screen text-gray-100 dark:text-gray-100 light:text-gray-900">
     <div class="container mx-auto px-4 py-16">
         <!-- Header -->
         <div class="text-center mb-16">
