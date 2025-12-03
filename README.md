@@ -457,7 +457,18 @@ Cache table created by migration: `0001_01_01_000001_create_cache_table`
 
 ## 🐳 Docker Services
 
-The `docker-compose.yml` provides two services:
+The `docker-compose.yml` provides five services:
+
+### App (Laravel Application)
+- **Image**: Custom build from Dockerfile (PHP 8.4)
+- **Port**: 8000
+- **Purpose**: Main Laravel application server
+- **Command**: `php artisan serve --host=0.0.0.0 --port=8000`
+
+### Queue Worker
+- **Image**: Same as App (shared Dockerfile)
+- **Purpose**: Process background jobs from Redis queue
+- **Command**: `php artisan queue:work --verbose --tries=3 --timeout=90`
 
 ### MySQL
 - **Image**: mysql:8.0
@@ -465,6 +476,12 @@ The `docker-compose.yml` provides two services:
 - **Database**: laravel_queue_demo
 - **Credentials**: root:root
 - **Volume**: Persistent data storage
+
+### Redis
+- **Image**: redis:alpine
+- **Port**: 6379
+- **Purpose**: Queue backend and caching
+- **Network**: laravel_network
 
 ### phpMyAdmin
 - **Image**: phpmyadmin:latest
