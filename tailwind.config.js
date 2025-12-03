@@ -3,7 +3,7 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: 'media', // Enables system-based dark mode via prefers-color-scheme
+    darkMode: 'class', // Enables manual dark mode control via class on html element
 
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',

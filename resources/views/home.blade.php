@@ -5,10 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laravel Queue & Cache Demo</title>
+    
+    <!-- Theme Switcher - Inline to prevent flash -->
+    <script>
+        const THEME_COOKIE = 'theme_preference';
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+        function systemPrefersDark() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        function applyTheme(theme) {
+            const isDark = theme === 'dark' || (theme === 'auto' && systemPrefersDark());
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+        const theme = getCookie(THEME_COOKIE) || 'auto';
+        applyTheme(theme);
+    </script>
+    
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 light:from-gray-50 light:via-blue-50 light:to-purple-50 min-h-screen text-gray-100 dark:text-gray-100 light:text-gray-900">
+<body class="bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- Theme Switcher Button -->
+    <div class="fixed top-6 right-6 z-50">
+        <button
+            onclick="cycleTheme()"
+            id="theme-switcher-btn"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 font-medium"
+            title="Click to cycle: Auto → Light → Dark"
+        >
+            🔄 <span class="ml-1">Auto</span>
+        </button>
+    </div>
+    
     <div class="container mx-auto px-4 py-16">
         <!-- Header -->
         <div class="text-center mb-16">
@@ -16,8 +53,8 @@
                 class="text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 Laravel Demo App
             </h1>
-            <p class="text-2xl text-gray-300 mb-4">Queue System & Caching Examples</p>
-            <p class="text-gray-400 max-w-3xl mx-auto">
+            <p class="text-2xl text-gray-600 dark:text-gray-300 mb-4">Queue System & Caching Examples</p>
+            <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                 Explore Laravel's powerful queue and caching systems through interactive demonstrations.
                 This app showcases best practices with a modern tech stack including React, Tailwind CSS, Livewire, and
                 MySQL.
@@ -113,10 +150,61 @@
         </div>
 
         <!-- Footer -->
-        <div class="text-center mt-16 text-gray-500">
+        <div class="text-center mt-16 text-gray-500 dark:text-gray-500">
             <p>Built with ❤️ using Laravel {{ Illuminate\Foundation\Application::VERSION }}</p>
         </div>
     </div>
+    
+    <!-- Theme Switcher Functions -->
+    <script>
+        function setCookie(name, value) {
+            const expires = new Date();
+            expires.setFullYear(expires.getFullYear() + 1);
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        }
+        
+        function updateThemeButton(theme) {
+            const button = document.getElementById('theme-switcher-btn');
+            if (!button) return;
+            
+            const icons = { 'light': '☀️', 'dark': '🌙', 'auto': '🔄' };
+            const labels = { 'light': 'Light', 'dark': 'Dark', 'auto': 'Auto' };
+            
+            button.innerHTML = `${icons[theme]} <span class="ml-1">${labels[theme]}</span>`;
+        }
+        
+        function cycleTheme() {
+            const current = getCookie(THEME_COOKIE) || 'auto';
+            let next;
+            
+            if (current === 'auto') {
+                next = 'light';
+            } else if (current === 'light') {
+                next = 'dark';
+            } else {
+                next = 'auto';
+            }
+            
+            setCookie(THEME_COOKIE, next);
+            applyTheme(next);
+            updateThemeButton(next);
+        }
+        
+        // Initialize button on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const theme = getCookie(THEME_COOKIE) || 'auto';
+            updateThemeButton(theme);
+            
+            // Listen for system theme changes when in auto mode
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if ((getCookie(THEME_COOKIE) || 'auto') === 'auto') {
+                        applyTheme('auto');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
