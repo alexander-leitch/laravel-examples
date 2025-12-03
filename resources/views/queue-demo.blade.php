@@ -35,14 +35,14 @@
                         <label for="taskName" class="block text-sm font-medium text-gray-300 mb-2">Task Name</label>
                         <input type="text" id="taskName" name="task_name"
                             class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
-                            placeholder="Enter task name..." value="Demo Task">
+                            placeholder="Enter task name..." value="">
                     </div>
 
                     <div>
                         <label for="duration" class="block text-sm font-medium text-gray-300 mb-2">
-                            Duration (seconds): <span id="durationValue" class="text-blue-400">10</span>
+                            Duration (seconds): <span id="durationValue" class="text-blue-400">15</span>
                         </label>
-                        <input type="range" id="duration" name="duration" min="5" max="30" value="10"
+                        <input type="range" id="duration" name="duration" min="10" max="60" value="15"
                             class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
                     </div>
 
@@ -87,6 +87,8 @@
             const data = Object.fromEntries(formData);
 
             const button = e.target.querySelector('button[type="submit"]');
+            const taskNameInput = document.getElementById('taskName');
+            
             button.disabled = true;
             button.textContent = 'Dispatching...';
 
@@ -109,6 +111,9 @@
                     <p class="text-sm text-gray-300 mt-2">${result.info}</p>
                 `;
                 messageDiv.classList.remove('hidden');
+                
+                // Clear the task name input
+                taskNameInput.value = '';
 
                 // Trigger Livewire refresh
                 setTimeout(() => {
