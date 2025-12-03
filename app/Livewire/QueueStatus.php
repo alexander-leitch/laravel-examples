@@ -34,21 +34,20 @@ class QueueStatus extends Component
             $this->pendingCount = \Illuminate\Support\Facades\Queue::size($queueName);
             
             // Get jobs from Redis queue
+            // NOTE: Laravel's Redis facade automatically adds the prefix, so we don't include it here
             $redis = \Illuminate\Support\Facades\Redis::connection();
-            $prefix = config('database.redis.options.prefix', '');
-            $key = $prefix . 'queues:' . $queueName;
+            $key = 'queues:' . $queueName;  // Laravel will add the prefix automatically
             
             $rawJobs = $redis->lrange($key, 0, 9); // Get first 10 jobs
             $this->jobs = collect($rawJobs)->map(function ($job, $index) {
                 $decoded = json_decode($job, true);
-                $data = json_decode($decoded['data']['command'] ?? '{}', true);
                 
                 return (object) [
                     'id' => $decoded['uuid'] ?? $decoded['id'] ?? ($index + 1),
                     'queue' => $decoded['queue'] ?? 'default',
                     'payload' => $decoded['displayName'] ?? class_basename($decoded['data']['commandName'] ?? 'Job'),
                     'attempts' => $decoded['attempts'] ?? 0,
-                    'created_at' => $decoded['pushedAt'] ?? time(),
+                    'created_at' => $decoded['createdAt'] ?? time(),
                 ];
             })->toArray();
         }
