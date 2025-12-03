@@ -120,84 +120,13 @@ laravel-examples/
 
 ---
 
-## 🚀 Installation
-
-### Prerequisites
-
-- PHP 8.2 or higher
-- Composer 2.x
-- Node.js 18.x or higher
-- NPM 10.x or higher
-- Docker and Docker Compose
-
-### Step-by-Step Setup
-
-1. **Clone the repository** (or navigate to the project directory):
-   ```bash
-   cd /Users/alexanderleitch/Antigravity/laravel-examples
-   ```
-
-2. **Install PHP dependencies**:
-   ```bash
-   composer install
-   ```
-
-3. **Install JavaScript dependencies**:
-   ```bash
-   npm install
-   ```
-
-4. **Set up environment**:
-   ```bash
-   cp .env.example .env  # If .env doesn't exist
-   php artisan key:generate
-   ```
-
-5. **Configure database** in `.env`:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=laravel_queue_demo
-   DB_USERNAME=root
-   DB_PASSWORD=root
-   ```
-
-6. **Start Docker containers**:
-   ```bash
-   docker compose up -d
-   ```
-
-7. **Run database migrations**:
-   ```bash
-   php artisan migrate
-   ```
-
-8. **Build frontend assets**:
-   ```bash
-   npm run dev
-   ```
-
-9. **Start Laravel development server** (in a new terminal):
-   ```bash
-   php artisan serve
-   ```
-
-10. **Start queue worker** (in another terminal):
-    ```bash
-    php artisan queue:work
-    ```
-
----
-
-## 🐳 Docker Setup (Recommended)
-
-The easiest way to run the application is using Docker Compose.
+## 🚀 Quick Start (Docker - Recommended)
 
 ### Prerequisites
 - Docker Desktop installed and running
+- Git (to clone the repository)
 
-### Quick Start
+### Installation
 
 1. **Clone the repository**:
    ```bash
@@ -210,19 +139,30 @@ The easiest way to run the application is using Docker Compose.
    docker compose up -d --build
    ```
 
+   This single command will:
+   - Build the Docker image with PHP 8.4, extensions, and dependencies
+   - Start all services (app, queue worker, MySQL, Redis, phpMyAdmin)
+   - Run database migrations automatically
+   - Install and build frontend assets
+
 3. **Access the application**:
-   - **App**: http://localhost:8000
+   - **Homepage**: http://localhost:8000
    - **Queue Demo**: http://localhost:8000/queue-demo
    - **Cache Demo**: http://localhost:8000/cache-demo
-   - **phpMyAdmin**: http://localhost:8080
+   - **phpMyAdmin**: http://localhost:8080 (MySQL management)
 
-4. **Run Tests (Optional)**:
+4. **Run tests** (optional):
    ```bash
    docker compose exec app php artisan test
    ```
 
-### Services Included
-- **App**: Laravel application (PHP 8.4)
+5. **Stop the application**:
+   ```bash
+   docker compose down
+   ```
+
+### Docker Services Included
+- **App**: Laravel application (PHP 8.4) on port 8000
 - **Queue Worker**: Dedicated worker for background jobs
 - **MySQL**: Database service (Port 3306)
 - **Redis**: Queue backend and caching (Port 6379)
@@ -273,9 +213,96 @@ Visit the Queue Demo page at `http://localhost:8000/queue-demo` to:
 - `.env` - Queue connection settings (`QUEUE_CONNECTION=redis`, `REDIS_HOST=redis`)
 - `docker-compose.yml` - Redis service and queue worker container
 
-4. Stop the application:
+---
 
-### Accessing the Application
+## 🛠️ Advanced Setup (Manual Installation)
+
+<details>
+<summary>Click to expand manual installation instructions</summary>
+
+### Prerequisites
+- PHP 8.2 or higher
+- Composer 2.x
+- Node.js 18.x or higher
+- NPM 10.x or higher
+- MySQL 8.0 (or use Docker for just MySQL)
+
+### Step-by-Step Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd laravel-examples
+   ```
+
+2. **Install PHP dependencies**:
+   ```bash
+   composer install
+   ```
+
+3. **Install JavaScript dependencies**:
+   ```bash
+   npm install
+   ```
+
+4. **Set up environment**:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Configure database** in `.env`:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=laravel_queue_demo
+   DB_USERNAME=root
+   DB_PASSWORD=root
+   
+   QUEUE_CONNECTION=redis
+   REDIS_HOST=127.0.0.1
+   REDIS_PORT=6379
+   ```
+
+6. **Start MySQL and Redis** (using Docker or locally):
+   ```bash
+   # Option 1: Use Docker for database/redis only
+   docker compose up -d mysql redis
+   
+   # Option 2: Use locally installed MySQL and Redis
+   # Make sure they're running on ports 3306 and 6379
+   ```
+
+7. **Run database migrations**:
+   ```bash
+   php artisan migrate
+   ```
+
+8. **Build frontend assets**:
+   ```bash
+   npm run dev
+   ```
+
+9. **Start Laravel development server** (in a new terminal):
+   ```bash
+   php artisan serve
+   ```
+
+10. **Start queue worker** (in another terminal):
+    ```bash
+    php artisan queue:work
+    ```
+
+### Accessing the Application (Manual Setup)
+- **Main Application**: http://127.0.0.1:8000
+- **Vite Dev Server**: http://localhost:5173 (runs automatically with `npm run dev`)
+
+</details>
+
+---
+
+## 💻 Usage
 
 Once all servers are running, access the application at:
 - **Main Application**: http://127.0.0.1:8000
