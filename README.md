@@ -190,6 +190,45 @@ laravel-examples/
 
 ---
 
+## 🐳 Docker Setup (Recommended)
+
+The easiest way to run the application is using Docker Compose.
+
+### Prerequisites
+- Docker Desktop installed and running
+
+### Quick Start
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd laravel-examples
+   ```
+
+2. **Start the application**:
+   ```bash
+   docker compose up -d --build
+   ```
+
+3. **Access the application**:
+   - **App**: http://localhost:8000
+   - **Queue Demo**: http://localhost:8000/queue-demo
+   - **Cache Demo**: http://localhost:8000/cache-demo
+   - **phpMyAdmin**: http://localhost:8080
+
+4. **Run Tests (Optional)**:
+   ```bash
+   docker compose exec app php artisan test
+   ```
+
+### Services Included
+- **App**: Laravel application (PHP 8.4)
+- **Queue Worker**: Dedicated worker for background jobs
+- **MySQL**: Database service (Port 3306)
+- **phpMyAdmin**: Database management interface (Port 8080)
+
+---
+
 ## 💻 Usage
 
 ### Accessing the Application

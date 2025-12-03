@@ -19,13 +19,21 @@ class QueueStatus extends Component
     #[On('refreshJobs')]
     public function refreshJobs()
     {
-        $this->jobs = \DB::table('jobs')
-            ->orderBy('id', 'desc')
-            ->limit(10)
-            ->get()
-            ->toArray();
+        $connection = config('queue.default');
+        \Log::info("QueueStatus connection: " . $connection);
 
-        $this->pendingCount = count($this->jobs);
+        if ($connection === 'database') {
+            $this->jobs = \DB::table('jobs')
+                ->orderBy('id', 'desc')
+                ->limit(10)
+                ->get()
+                ->toArray();
+            $this->pendingCount = count($this->jobs);
+        } else {
+            // For Redis/other drivers, we can't easily list jobs, but we can get the count
+            $this->pendingCount = \Illuminate\Support\Facades\Queue::size();
+            $this->jobs = []; // Cannot easily list jobs from Redis
+        }
     }
 
     public function render()

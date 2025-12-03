@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5382c0ea935a99acbf30447c3ae207f8",
+    "content-hash": "99d1302b3d6833aad1c84064ff8263f0",
     "packages": [
         {
             "name": "brick/math",
@@ -134,6 +134,86 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "dev-kraken/env-validator",
+            "version": "V1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dev-kraken/env-validator.git",
+                "reference": "af6243ba8fe2b96bd1c62857c4614ec87973bd6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dev-kraken/env-validator/zipball/af6243ba8fe2b96bd1c62857c4614ec87973bd6f",
+                "reference": "af6243ba8fe2b96bd1c62857c4614ec87973bd6f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "vlucas/phpdotenv": "^5.4"
+            },
+            "require-dev": {
+                "laravel/framework": "^11.0|^12.0",
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^9.0|^10.0",
+                "pestphp/pest": "^2.0|^3.0",
+                "pestphp/pest-plugin-laravel": "^2.2|^3.0",
+                "phpstan/phpstan": "^2.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "EnvValidator": "EnvValidator\\Facades\\EnvValidator"
+                    },
+                    "providers": [
+                        "EnvValidator\\EnvValidatorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EnvValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dev Kraken",
+                    "email": "soman@devkraken.com"
+                }
+            ],
+            "description": "Type-safe environment variable validation for Laravel and PHP applications with intelligent presets and extensible rule objects",
+            "homepage": "https://github.com/dev-kraken/env-validator",
+            "keywords": [
+                "configuration",
+                "dotenv",
+                "env",
+                "environment",
+                "laravel",
+                "microservices",
+                "php",
+                "production",
+                "type-safe",
+                "validation",
+                "validator"
+            ],
+            "support": {
+                "docs": "https://github.com/dev-kraken/env-validator#readme",
+                "issues": "https://github.com/dev-kraken/env-validator/issues",
+                "source": "https://github.com/dev-kraken/env-validator"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/dev-kraken",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-05-27T13:32:48+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -8714,5 +8794,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

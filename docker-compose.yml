@@ -1,6 +1,63 @@
-version: '3.8'
-
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "5173:5173" # Add this line
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=laravel_queue_demo
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - QUEUE_CONNECTION=redis
+      - REDIS_HOST=redis
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    networks:
+      - laravel_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  queue-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_queue_worker
+    restart: unless-stopped
+    command: php artisan queue:work --verbose --tries=3 --timeout=90
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=laravel_queue_demo
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - QUEUE_CONNECTION=redis
+      - REDIS_HOST=redis
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      app:
+        condition: service_started
+    networks:
+      - laravel_network
+
   mysql:
     image: mysql:8.0
     container_name: laravel_mysql
@@ -9,11 +66,16 @@ services:
       MYSQL_DATABASE: laravel_queue_demo
       MYSQL_ROOT_PASSWORD: root
       MYSQL_PASSWORD: root
-      MYSQL_USER: laravel
+      MYSQL_USER: root
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - laravel_network
 
@@ -30,6 +92,15 @@ services:
       - "8080:80"
     depends_on:
       - mysql
+    networks:
+      - laravel_network
+
+  redis:
+    image: redis:alpine
+    container_name: laravel_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
     networks:
       - laravel_network
 
