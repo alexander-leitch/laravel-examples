@@ -225,11 +225,55 @@ The easiest way to run the application is using Docker Compose.
 - **App**: Laravel application (PHP 8.4)
 - **Queue Worker**: Dedicated worker for background jobs
 - **MySQL**: Database service (Port 3306)
+- **Redis**: Queue backend and caching (Port 6379)
 - **phpMyAdmin**: Database management interface (Port 8080)
 
----
+### Queue System (Redis)
 
-## 💻 Usage
+The application uses **Redis** for queue management for better performance and scalability.
+
+**Queue Configuration:**
+- **Driver**: Redis (configured in `.env` and `docker-compose.yml`)
+- **Redis Service**: Running on `redis:6379` within Docker network  
+- **Queue Worker**: Runs as a separate Docker container (`queue-worker`)
+
+**Managing the Queue Worker:**
+
+Stop the queue worker (jobs will accumulate in Redis):
+```bash
+docker compose stop queue-worker
+```
+
+Start the queue worker (processes queued jobs):
+```bash
+docker compose start queue-worker
+```
+
+Restart the queue worker:
+```bash
+docker compose restart queue-worker
+```
+
+View queue worker logs:
+```bash
+docker compose logs -f queue-worker
+```
+
+**Testing Queue Jobs:**
+
+Visit the Queue Demo page at `http://localhost:8000/queue-demo` to:
+- Dispatch jobs to the queue
+- Monitor pending jobs in real-time
+- See job details (ID, queue name, attempts, created time)
+
+**Tip**: If you want to see jobs accumulate in the queue status display, stop the queue worker before dispatching jobs. Jobs are processed very quickly when the worker is running.
+
+**Queue Configuration Files:**
+- `config/queue.php` - Queue driver configuration
+- `.env` - Queue connection settings (`QUEUE_CONNECTION=redis`, `REDIS_HOST=redis`)
+- `docker-compose.yml` - Redis service and queue worker container
+
+4. Stop the application:
 
 ### Accessing the Application
 
