@@ -20,7 +20,6 @@ class QueueStatus extends Component
     public function refreshJobs()
     {
         $connection = config('queue.default');
-        \Log::info("QueueStatus connection: " . $connection);
 
         if ($connection === 'database') {
             $this->jobs = \DB::table('jobs')
@@ -30,9 +29,28 @@ class QueueStatus extends Component
                 ->toArray();
             $this->pendingCount = count($this->jobs);
         } else {
-            // For Redis/other drivers, we can't easily list jobs, but we can get the count
-            $this->pendingCount = \Illuminate\Support\Facades\Queue::size();
-            $this->jobs = []; // Cannot easily list jobs from Redis
+            // For Redis, fetch jobs from the queue
+            $queueName = config('queue.connections.redis.queue', 'default');
+            $this->pendingCount = \Illuminate\Support\Facades\Queue::size($queueName);
+            
+            // Get jobs from Redis queue
+            $redis = \Illuminate\Support\Facades\Redis::connection();
+            $prefix = config('database.redis.options.prefix', '');
+            $key = $prefix . 'queues:' . $queueName;
+            
+            $rawJobs = $redis->lrange($key, 0, 9); // Get first 10 jobs
+            $this->jobs = collect($rawJobs)->map(function ($job, $index) {
+                $decoded = json_decode($job, true);
+                $data = json_decode($decoded['data']['command'] ?? '{}', true);
+                
+                return (object) [
+                    'id' => $decoded['uuid'] ?? $decoded['id'] ?? ($index + 1),
+                    'queue' => $decoded['queue'] ?? 'default',
+                    'payload' => $decoded['displayName'] ?? class_basename($decoded['data']['commandName'] ?? 'Job'),
+                    'attempts' => $decoded['attempts'] ?? 0,
+                    'created_at' => $decoded['pushedAt'] ?? time(),
+                ];
+            })->toArray();
         }
     }
 
